@@ -28,6 +28,7 @@ const AudioWaveform = () => {
 					container: '#waveform',
 					scrollParent: true,
 					autoCenter: true,
+					barWidth: 2,
 					cursorColor: 'navy-blue',
 					loopSelection: true,
 					waveColor: '#C3E0E5',
