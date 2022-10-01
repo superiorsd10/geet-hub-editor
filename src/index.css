@@ -92,6 +92,19 @@ button.upload-btn:hover {
   border: 1px solid #C3E0E5;
 }
 
+.download {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  background: #41729f;
+  color: white;
+  width: 8em;
+  border-radius: 2px;
+  cursor: pointer;
+  padding: 0.25em;
+  border: 1px solid #c3e0e5;
+}
+
 /* all the button controls */
 div.all-controls {
   margin: 2em auto;
