@@ -104,6 +104,35 @@ const AudioWaveform = () => {
 		}
 	}, [duration, wavesurferObj]);
 
+	function handleToggle(isDual) {
+		const input = wavesurferObj.backend.ac.createGain();
+		const splitter = wavesurferObj.backend.ac.createChannelSplitter(2);
+		const merger = wavesurferObj.backend.ac.createChannelMerger(2);
+		const leftGain = wavesurferObj.backend.ac.createGain();
+		const rightGain = wavesurferObj.backend.ac.createGain();
+		wavesurferObj.backend.setFilters([]);
+		// This will make sure that a mono signal gets upmixed to stereo.
+		// If you always have stereo sound you can remove it.
+		input.channelCountMode = "explicit";
+
+		if (!isDual) {
+			// It is only necessary to connect the right channel
+			// because this is the one which needs optional parameters.
+			splitter.connect(rightGain, 1);
+			rightGain.connect(merger);
+			rightGain.connect(merger, 0, 1);
+
+			// Only the one connection which needs an optional parameter
+			// needs to be done for the left channel
+			leftGain.connect(merger, 0, 1);
+
+			// wavesufer.js will connect everything else.
+			wavesurferObj.backend.setFilters([input, splitter, leftGain, merger]);
+		}
+	}
+
+
+
 	const handlePlayPause = (e) => {
 		wavesurferObj.playPause();
 		setPlaying(!playing);
@@ -203,7 +232,7 @@ const AudioWaveform = () => {
 			<div ref={timelineRef} id='wave-timeline' />
 			<div className='all-controls'>
 				<div className='left-container'>
-					<ToggleButton />
+					<ToggleButton onChange={handleToggle} />
 					<button
 						title='play/pause'
 						className='controls'
