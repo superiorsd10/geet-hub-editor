@@ -4,6 +4,7 @@ import RegionsPlugin from 'wavesurfer.js/dist/plugin/wavesurfer.regions.min.js';
 import { FileContext } from '../contexts/fileContext';
 import wavesurfer from 'wavesurfer.js';
 import ToggleButton from './ToggleButton';
+import { saveData, bufferToWave } from "../Utils/helper";
 
 const AudioWaveform = () => {
 	const wavesurferRef = useRef(null);
@@ -197,6 +198,17 @@ const AudioWaveform = () => {
 		}
 	};
 
+  function handleDownload() {
+	console.log(wavesurferObj.backend);
+    saveData(
+      bufferToWave(
+        wavesurferObj.backend.buffer,
+        0,
+        wavesurferObj.backend.buffer.length
+      ),
+      "download.mp3"
+    );
+  }
 	return (
 		<section className='waveform-container'>
 			<div ref={wavesurferRef} id='waveform' />
@@ -265,6 +277,23 @@ const AudioWaveform = () => {
 					</div>
 				</div>
 			</div>
+      <button
+        title="download"
+        className="download"
+        onClick={handleDownload}
+        style={{ margin: "auto" }}
+      >
+        <i
+          style={{
+            fontSize: "1.2em",
+            color: "white",
+          }}
+          className="material-icons"
+        >
+          file_download
+        </i>
+        Download
+      </button>
 		</section>
 	);
 };
